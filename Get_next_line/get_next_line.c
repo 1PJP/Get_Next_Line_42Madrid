@@ -6,7 +6,7 @@
 /*   By: jezambra <jezambra@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/06 21:09:29 by jezambra          #+#    #+#             */
-/*   Updated: 2026/02/06 22:10:59 by jezambra         ###   ########.fr       */
+/*   Updated: 2026/02/08 15:37:04 by jezambra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,5 +15,9 @@
 char	*get_next_line(int fd)
 {
 	static t_gnl	gnl;
+	char	*line;
+
+	if (fd < 0 || BUFFER_SIZE <= 0)
+		return (NULL);
 
 }
