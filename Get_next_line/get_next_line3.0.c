@@ -1,21 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line3.0.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jezambra <jezambra@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/06 21:09:29 by jezambra          #+#    #+#             */
-/*   Updated: 2026/02/10 22:10:47 by jezambra         ###   ########.fr       */
+/*   Created: 2026/02/10 22:02:45 by jezambra          #+#    #+#             */
+/*   Updated: 2026/02/10 22:06:43 by jezambra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char	*get_next_line(int fd)
+char	*get_next_line_stack(int fd)
 {
 	static t_gnl	gnl;
-	char	*buffer;
+	char buffer[BUFFER_SIZE + 1];// guardamos todo lo que leemos antes de pasarlo al stash
 	int	i;
 	ssize_t	byread;//cunatos bytes vamos a leer
 
@@ -23,25 +23,17 @@ char	*get_next_line(int fd)
 		return (NULL);
 	if (!gnl.stash)
 		gnl.stash = ft_strdup_gnl("");
-	buffer = malloc(sizeof(char) * (BUFFER_SIZE + 1));
-	if (!buffer)
-		return (NULL);
 	byread = 1;
 	while (byread > 0)
 	{
 		byread = read(fd, buffer, BUFFER_SIZE);
 		if (byread == -1)
-		{
-			free(buffer);
 			return (NULL);
-		}
 	}
 	i = 0;
 	//while (gnl.stash[i] && gnl.stash[i] != '\n')
 	//	i++;
 }
-/*funcion principal, accedemos de esta forma directo al struct ya que no
-referenciamos ni desreferenciamos punteros, tenemos una variable static no puntero 
-asi que no usamos -> si no '.', de esta forma accedemos directo al struct y trabajamos
-en el heap no en el stack, aqui asiganosm memoria manualmente de igual forma la liberamos
-aumenta el riesgo de leaks memory pero asi aprendemos manejarlo mejor*/
+/*esta version la vamos hacer con la memoria en el stack, osea no
+usamos free ya que el stack lo hace automaticamente, en teoria 
+menos riesgos*/
