@@ -6,7 +6,7 @@
 /*   By: jezambra <jezambra@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/06 21:09:29 by jezambra          #+#    #+#             */
-/*   Updated: 2026/02/10 22:10:47 by jezambra         ###   ########.fr       */
+/*   Updated: 2026/02/13 23:05:01 by jezambra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 char	*get_next_line(int fd)
 {
 	static t_gnl	gnl;
-	char	*buffer;
+	char	*buffer;//temporal que solo guarda lo leido, luego lo pasa a stash
 	int	i;
 	ssize_t	byread;//cunatos bytes vamos a leer
 

@@ -6,7 +6,7 @@
 /*   By: jezambra <jezambra@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/06 21:10:08 by jezambra          #+#    #+#             */
-/*   Updated: 2026/02/10 22:07:12 by jezambra         ###   ########.fr       */
+/*   Updated: 2026/02/13 23:21:11 by jezambra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 
 #include <unistd.h>
 #include <stdlib.h>
+# include <stddef.h>
 #include <fcntl.h>
 
 
@@ -33,6 +34,9 @@ char	*get_next_line_stack(int fd);
 
 char	*ft_strdup_gnl(char *s);
 size_t	ft_strlen_gnl(char *s);
+char	*ft_strjoin_gnl(char const *s1, char const *s2);
+char	*ft_strchr_gnl(const char *s, int c);
+char	get_line(t_gnl *gnl);
 
 
 #endif

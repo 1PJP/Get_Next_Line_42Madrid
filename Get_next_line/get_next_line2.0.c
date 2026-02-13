@@ -6,7 +6,7 @@
 /*   By: jezambra <jezambra@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/09 22:30:14 by jezambra          #+#    #+#             */
-/*   Updated: 2026/02/10 22:12:59 by jezambra         ###   ########.fr       */
+/*   Updated: 2026/02/13 21:59:13 by jezambra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 char	*get_next_line_ptr(int fd)
 {
 	static t_gnl	*gnl;
-	char	buff;
+	char	*buff;//temporal que solo guarda lo leido, luego lo pasa a stash
 	ssize_t	byread;//cunatos bytes vamos a leer
 	int	i;
 
@@ -48,5 +48,9 @@ char	*get_next_line_ptr(int fd)
 	//	i++;
 }
 /*version experimental, para acceder mediante puntero forma como las listas
- enlazadas en esta version manejamos mas punteros y usamos el operador -> para
-  apuntar y acceder a la lista un poco mas compleja pero es una comparacion*/
+enlazadas en esta version manejamos mas punteros, si no hacemos una reserva
+de memoria con malloc lo que tendriamos seria una persistencia de puntero
+pero no para la memeoria del sruct por eso aqui tenemos que hacer un malloc
+para crear memora y automaticamente al ser static se vuelve persistente
+y usamos el operador -> paraapuntar y acceder a la lista un poco mas 
+compleja pero es una comparacion*/
