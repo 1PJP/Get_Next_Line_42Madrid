@@ -6,7 +6,7 @@
 /*   By: jezambra <jezambra@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/10 22:02:45 by jezambra          #+#    #+#             */
-/*   Updated: 2026/02/13 23:11:59 by jezambra         ###   ########.fr       */
+/*   Updated: 2026/02/13 23:29:47 by jezambra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int main(void)
 	int fd;
 	char *line;
 
-	fd = open("archivo_prueba.txt", O_RDONLY);
+	fd = open("prueba.txt", O_RDONLY);
 	if (fd < 0)
 	{
 		perror("Error al abrir archivo");
