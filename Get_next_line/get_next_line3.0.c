@@ -6,7 +6,7 @@
 /*   By: jezambra <jezambra@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/10 22:02:45 by jezambra          #+#    #+#             */
-/*   Updated: 2026/02/13 23:33:05 by jezambra         ###   ########.fr       */
+/*   Updated: 2026/02/13 23:34:10 by jezambra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,9 @@ int main(void)
 
 	fd = open("prueba.txt", O_RDONLY);
 	if (fd < 0)
-		return 1;
+		return (1);
 	while ((line = get_next_line_stack(fd)) != NULL)
 		free(line);
 	close(fd);
-	return 0;
+	return (0);
 }
