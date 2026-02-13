@@ -6,7 +6,7 @@
 /*   By: jezambra <jezambra@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/10 22:02:45 by jezambra          #+#    #+#             */
-/*   Updated: 2026/02/13 23:29:47 by jezambra         ###   ########.fr       */
+/*   Updated: 2026/02/13 23:31:02 by jezambra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,8 @@ int main(void)
 	}
 	while ((line = get_next_line_stack(fd)) != NULL)
 	{
-		printf("Linea leída: %s", line); // la línea ya incluye '\n'
-		free(line); // liberamos la memoria de cada línea
+		printf("Linea leída: %s", line);
+		free(line);
 	}
 	close(fd);
 	return 0;
