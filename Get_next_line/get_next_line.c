@@ -6,7 +6,7 @@
 /*   By: jezambra <jezambra@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/06 21:09:29 by jezambra          #+#    #+#             */
-/*   Updated: 2026/02/13 23:05:01 by jezambra         ###   ########.fr       */
+/*   Updated: 2026/02/16 22:38:11 by jezambra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ char	*get_next_line(int fd)
 {
 	static t_gnl	gnl;
 	char	*buffer;//temporal que solo guarda lo leido, luego lo pasa a stash
-	int	i;
+	char	*temp;
 	ssize_t	byread;//cunatos bytes vamos a leer
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
@@ -27,7 +27,7 @@ char	*get_next_line(int fd)
 	if (!buffer)
 		return (NULL);
 	byread = 1;
-	while (byread > 0)
+	while (!ft_strchr_gnl(gnl.stash, '\n') && byread > 0)
 	{
 		byread = read(fd, buffer, BUFFER_SIZE);
 		if (byread == -1)
@@ -35,10 +35,20 @@ char	*get_next_line(int fd)
 			free(buffer);
 			return (NULL);
 		}
+		buffer[byread] = '\0';
+		temp = gnl.stash;
+		gnl.stash = ft_strjoin_gnl(gnl.stash, buffer);
+		free(temp);
+		if (!gnl.stash)
+		{
+			free(buffer);
+			return (NULL);
+		}
 	}
-	i = 0;
-	//while (gnl.stash[i] && gnl.stash[i] != '\n')
-	//	i++;
+	free(buffer);
+	if (!gnl.stash || gnl.stash[0] == '\0')
+		return (NULL);
+	return (get_line(&gnl));
 }
 /*funcion principal, accedemos de esta forma directo al struct ya que no
 referenciamos ni desreferenciamos punteros, tenemos una variable static no puntero 

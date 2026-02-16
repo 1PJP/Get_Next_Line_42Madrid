@@ -6,7 +6,7 @@
 /*   By: jezambra <jezambra@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/09 22:30:14 by jezambra          #+#    #+#             */
-/*   Updated: 2026/02/13 21:59:13 by jezambra         ###   ########.fr       */
+/*   Updated: 2026/02/16 23:03:05 by jezambra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ char	*get_next_line_ptr(int fd)
 	static t_gnl	*gnl;
 	char	*buff;//temporal que solo guarda lo leido, luego lo pasa a stash
 	ssize_t	byread;//cunatos bytes vamos a leer
-	int	i;
+	char	*temp;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
@@ -29,12 +29,19 @@ char	*get_next_line_ptr(int fd)
 		gnl->stash = NULL;
 	}
 	if (!gnl->stash)
+	{
 		gnl->stash = ft_strdup_gnl("");
-	buff = malloc(BUFFER_SIZE);
+		if (!gnl->stash)
+		{
+			free(buff);
+			return (NULL);
+		}
+	}
+	buff = malloc(BUFFER_SIZE + 1);
 	if (!buff)
 		return (NULL);
 		byread = 1;
-	while (byread > 0)
+	while (!ft_strchr_gnl(gnl->stash, '\n') && byread > 0)
 	{
 		byread = read(fd, buff, BUFFER_SIZE);
 		if (byread == -1)
@@ -42,10 +49,21 @@ char	*get_next_line_ptr(int fd)
 			free(buff);
 			return (NULL);
 		}
+		buff[byread] = '\0';
+		temp = ft_strjoin_gnl(gnl->stash, buff);
+		if (!temp)
+		{
+			free(buff);
+			free(gnl->stash);
+			return (NULL);
+		}
+		free(gnl->stash);
+		gnl->stash = temp;
 	}
-	//i = 0;
-	//while (gnl->stash[i] && gnl->stash != '\n')
-	//	i++;
+	free(buff);
+	if (!gnl->stash || gnl->stash[0] == '\0')
+		return (NULL);
+	return (get_line(gnl));
 }
 /*version experimental, para acceder mediante puntero forma como las listas
 enlazadas en esta version manejamos mas punteros, si no hacemos una reserva

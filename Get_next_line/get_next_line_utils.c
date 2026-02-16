@@ -6,13 +6,13 @@
 /*   By: jezambra <jezambra@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/06 21:09:54 by jezambra          #+#    #+#             */
-/*   Updated: 2026/02/13 23:23:48 by jezambra         ###   ########.fr       */
+/*   Updated: 2026/02/16 22:09:52 by jezambra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-size_t	ft_strlen_gnl(char *s)
+size_t	ft_strlen_gnl(const char *s)
 {
 	size_t	i;
 	
@@ -34,6 +34,7 @@ char	*ft_strdup_gnl(char *s)
 	str = malloc(ft_strlen_gnl(s) + 1);
 	if (!str)
 		return (NULL);
+	i = 0;
 	while (s[i])
 	{
 		str[i] = s[i];
@@ -42,7 +43,7 @@ char	*ft_strdup_gnl(char *s)
 	str[i] = '\0';
 	return (str);
 }
-char	*ft_strjoin_gnl(char *s1, char *s2)
+char	*ft_strjoin_gnl(char const *s1, char const *s2)
 {
 	size_t	i1;
 	size_t	i2;
@@ -89,7 +90,7 @@ char	*ft_strchr_gnl(const char *s, int c)
 		return ((char *)(s + i));
 	return (NULL);
 }
-char	get_line(t_gnl *gnl)
+char	*get_line(t_gnl *gnl)
 {
 	int	i;
 	char	*line;
@@ -103,7 +104,10 @@ char	get_line(t_gnl *gnl)
 		return (NULL);
 	i = 0;
 	while (gnl->stash[i] && gnl->stash[i] != '\n')
-		line[i] = gnl->stash[i++];
+	{
+		line[i] = gnl->stash[i];
+		i++;
+	}
 	if (gnl->stash[i] == '\n')
 		line[i++] = '\n';
 	line[i] = '\0';
