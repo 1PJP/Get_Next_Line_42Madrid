@@ -6,7 +6,7 @@
 /*   By: jezambra <jezambra@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/06 21:09:54 by jezambra          #+#    #+#             */
-/*   Updated: 2026/02/16 22:09:52 by jezambra         ###   ########.fr       */
+/*   Updated: 2026/02/20 22:18:38 by jezambra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,12 +90,14 @@ char	*ft_strchr_gnl(const char *s, int c)
 		return ((char *)(s + i));
 	return (NULL);
 }
-char	*get_line(t_gnl *gnl)
+char	*ft_get_line(t_gnl *gnl)
 {
 	int	i;
 	char	*line;
 	char	*save;
 
+	if (!gnl || !gnl->stash || gnl->stash[0] == '\0')
+		return (NULL);
 	i = 0;
 	while (gnl->stash[i] && gnl->stash[i] != '\n')
 		i++;
@@ -114,10 +116,7 @@ char	*get_line(t_gnl *gnl)
 	save = ft_strdup_gnl(gnl->stash + i);
 	free(gnl->stash);
 	gnl->stash = save;
-	if (gnl->stash && gnl->stash[0] == '\0')
-	{
-		free(gnl->stash);
-		gnl->stash = NULL;
-	}
+	if (!gnl->stash && gnl->stash[0] == '\0')
+		return (NULL);
 	return (line);
 }
