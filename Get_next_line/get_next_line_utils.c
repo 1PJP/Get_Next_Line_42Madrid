@@ -6,7 +6,7 @@
 /*   By: jezambra <jezambra@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/06 21:09:54 by jezambra          #+#    #+#             */
-/*   Updated: 2026/02/20 22:18:38 by jezambra         ###   ########.fr       */
+/*   Updated: 2026/02/21 21:08:55 by jezambra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 size_t	ft_strlen_gnl(const char *s)
 {
 	size_t	i;
-	
+
 	i = 0;
-	if(!s)
+	if (!s)
 		return (0);
 	while (s[i])
 		i++;
@@ -27,7 +27,7 @@ size_t	ft_strlen_gnl(const char *s)
 char	*ft_strdup_gnl(char *s)
 {
 	char	*str;
-	int	i;
+	int		i;
 
 	if (!s)
 		return (NULL);
@@ -43,6 +43,7 @@ char	*ft_strdup_gnl(char *s)
 	str[i] = '\0';
 	return (str);
 }
+
 char	*ft_strjoin_gnl(char const *s1, char const *s2)
 {
 	size_t	i1;
@@ -71,6 +72,7 @@ char	*ft_strjoin_gnl(char const *s1, char const *s2)
 	s3[i1 + i2] = '\0';
 	return (s3);
 }
+
 char	*ft_strchr_gnl(const char *s, int c)
 {
 	unsigned char	ch;
@@ -90,20 +92,23 @@ char	*ft_strchr_gnl(const char *s, int c)
 		return ((char *)(s + i));
 	return (NULL);
 }
+
 char	*ft_get_line(t_gnl *gnl)
 {
-	int	i;
+	int		i;
 	char	*line;
 	char	*save;
 
-	if (!gnl || !gnl->stash || gnl->stash[0] == '\0')
-		return (NULL);
 	i = 0;
 	while (gnl->stash[i] && gnl->stash[i] != '\n')
 		i++;
 	line = malloc(i + 2);
 	if (!line)
-		return (NULL);
+	{
+		free(gnl->stash);
+		gnl->stash = NULL;
+		return(NULL);
+	}
 	i = 0;
 	while (gnl->stash[i] && gnl->stash[i] != '\n')
 	{
@@ -114,9 +119,11 @@ char	*ft_get_line(t_gnl *gnl)
 		line[i++] = '\n';
 	line[i] = '\0';
 	save = ft_strdup_gnl(gnl->stash + i);
+	if (!save)
+	return (free(line), free(gnl->stash), gnl->stash = NULL, NULL);
 	free(gnl->stash);
 	gnl->stash = save;
-	if (!gnl->stash && gnl->stash[0] == '\0')
-		return (NULL);
+	if (!gnl->stash || gnl->stash[0] == '\0')
+		return (free(gnl->stash), gnl->stash = NULL);
 	return (line);
 }
