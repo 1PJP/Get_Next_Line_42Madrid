@@ -6,7 +6,7 @@
 /*   By: jezambra <jezambra@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/06 21:09:54 by jezambra          #+#    #+#             */
-/*   Updated: 2026/02/21 21:08:55 by jezambra         ###   ########.fr       */
+/*   Updated: 2026/02/22 14:40:39 by jezambra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,18 +52,16 @@ char	*ft_strjoin_gnl(char const *s1, char const *s2)
 
 	if (!s1 || !s2)
 		return (NULL);
-	i1 = 0;
-	i2 = 0;
 	s3 = malloc(sizeof(char) * (ft_strlen_gnl(s1) + ft_strlen_gnl(s2) + 1));
 	if (!s3)
 		return (NULL);
 	i1 = 0;
-	i2 = 0;
 	while (s1[i1])
 	{
 		s3[i1] = s1[i1];
 		i1++;
 	}
+	i2 = 0;
 	while (s2[i2])
 	{
 		s3[i1 + i2] = s2[i2];
@@ -99,16 +97,14 @@ char	*ft_get_line(t_gnl *gnl)
 	char	*line;
 	char	*save;
 
+	if (!gnl->stash || gnl->stash[0] == '\0')
+		return (NULL);
 	i = 0;
 	while (gnl->stash[i] && gnl->stash[i] != '\n')
 		i++;
-	line = malloc(i + 2);
+	line = malloc(i + (gnl->stash[i] == '\n') + 1);
 	if (!line)
-	{
-		free(gnl->stash);
-		gnl->stash = NULL;
-		return(NULL);
-	}
+		return (free(gnl->stash), gnl->stash = NULL, NULL);
 	i = 0;
 	while (gnl->stash[i] && gnl->stash[i] != '\n')
 	{
@@ -119,11 +115,7 @@ char	*ft_get_line(t_gnl *gnl)
 		line[i++] = '\n';
 	line[i] = '\0';
 	save = ft_strdup_gnl(gnl->stash + i);
-	if (!save)
-	return (free(line), free(gnl->stash), gnl->stash = NULL, NULL);
 	free(gnl->stash);
 	gnl->stash = save;
-	if (!gnl->stash || gnl->stash[0] == '\0')
-		return (free(gnl->stash), gnl->stash = NULL);
 	return (line);
 }

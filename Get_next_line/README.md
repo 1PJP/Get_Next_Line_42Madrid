@@ -1,12 +1,161 @@
-# *Este proyecto ha sido creado como parte del currículo de 42 por jezambra.*
+*Este proyecto ha sido creado como parte del currículo de 42 por jezambra.*
+
+# Get_next_line
+
+# Descripción
+
+El proyecto Get Next Line (GNL) es un ejercicio fundamental en la formación de 42 Madrid que consiste en implementar una función en C capaz de leer un archivo línea por línea. Esta función, llamada get_next_line, debe gestionar la lectura de manera eficiente utilizando un buffer de tamaño configurable y manejar correctamente la memoria dinámica.
+
+<b>Prototipo de la función:</b>
+
+	char	*get_next_line(int fd)
+
+Cadaa función recibe un descriptor de archivo (fd) y devuelve la siguiente línea completa, incluyendo el salto de línea `\n` si existe. Cuando se alcanza el final del archivo o ocurre un error, la función devuelve `NULL`.
+
+Internamente, utiliza una variable estática para almacenar los datos sobrantes de la lectura anterior, permitiendo continuar donde se dejó en la siguiente llamada.
+
+## Objetivos del proyecto
+
+* Comprender el manejo de descriptores de archivo en C.
+* Practicar la gestión dinámica de memoria con malloc y free.
+* Implementar una función que mantenga el estado entre llamadas usando variables estáticas.
+* Leer archivos de texto línea a línea, incluyendo líneas largas que superen el tamaño del buffer.
+* Manejar correctamente los saltos de línea y el final del archivo.
+* Evitar fugas de memoria y errores de acceso.
+
+<hr><hr><br>
 
 
-# Descripción.
+## Conceptos
+
+### 1. File Descriptors (fd)
+
+Un fd es un número entero que el sistema operativo usa para identificar un canal de comunicación abierto:
+
+* 0 (Standard Input): Teclado.
+* 1 (Standard Output): Pantalla.
+* 2 (Standard Error): Pantalla (errores).
+* 3 en adelante: Archivos abiertos con open().
+<br><br><hr>
+
+### 2. ¿Qué es el BUFFER_SIZE?
+
+Es la cantidad de bytes que la función read() intenta leer de golpe.
+
+* Si BUFFER_SIZE=1: Lee letra a letra (muy lento).
+* Si BUFFER_SIZE=100: Lee de 100 en 100 caracteres.
+* Caso de error: Si el fd es inválido o BUFFER_SIZE <= 0, la función devuelve NULL.
+<br><br><hr>
+
+
+### 3. Variables Estáticas (static)
+
+Se utilizan para que la función "recuerde" lo que leyó en la llamada anterior. A diferencia de una variable local normal, una static no se destruye cuando la función termina.
+
+<hr><hr><br><br>
+
+## Funciones del Sistema Utilizadas
+
+### open()
+Para usarla necesitas `#include <fcntl.h>`. Permite abrir un archivo y obtener su fd.
+
+Flags comunes:
+
+	O_RDONLY (Solo lectura)
+	O_WRONLY (Solo escritura)
+	O_RDWR (Lectura y escritura).
+
+* Retorno: El fd (entero positivo) o -1 si hay error.
+
+
+### read()
+
+Viene de `#include <unistd.h>`. Lee datos desde un fd hacia un buffer.
+
+	ssize_t read(int fd, void *buf, size_t count);
+
+* Retorno (> 0):  Número de bytes leídos realmente.
+
+* Retorno (0): Final del archivo (EOF).
+
+* Retorno (-1): Error.
+
+<br><hr><hr><br><br>
+
+
+# INSTRUCCIONES
+Instrucciones para compilar y ejecutar el programa de prueba de get_next_line, lee atentatemente, es responsabilidad del rpogramador que lo utilice, en leer las instrucciones para su correcto funcionameinto.
+<br><br>
+
+## 1. Compilar
+
+Abre una terminal en la carpeta donde están los archivos y ejecuta el siguiente comando para compilar el programa de prueba junto con la implementación de get_next_line y sus utilidades:
+
+	cc -Wall -Wextra -Werror -D BUFFER_SIZE=42 *.c
+
+* Puedes cambiar el valor de BUFFER_SIZE para probar diferentes tamaños de buffer.
+* Asegúrate de que main.c contiene el código de prueba que llama a get_next_line con el archivo prueba.txt.
+`---`
+<br><br>
+## 2. Crear el archivo de prueba
+
+Crea un archivo llamado `test.txt` en la misma carpeta con el siguiente contenido para probar diferentes casos.
+
+Escribe lo que quieras en él, puedes escribir o copiar en él El Quijote.
+<br><br>
+
+
+## 2. Ejecutar
+
+Ejecuta el programa compilado con:
+
+	./a.out
+
+Si utilizas el main facilitado por el programador aitorres, el programa leerá prueba.txt línea a línea y lo mostrará en pantalla.
+<br><br>
 
 
 
-# Instrucciones.
+## 3. Comprobar fugas de memoria
+
+Puedes usar valgrind para verificar que no haya fugas de memoria
+
+	valgrind --leak-check=full ./gnl_test
 
 
+<br><br>
+Por si quedan dudas, te muestro el main con cada iteración
 
-# Recursos.
+	#include "get_next_line.h"
+	#include <stdio.h>
+
+	int	main(void)
+	{
+		int		fd;
+		char	*line;
+
+		fd = open("test.txt", O_RDONLY);
+		if (fd < 0)
+		{
+			printf("Error!!");
+			return (1);
+		}
+		line = get_next_line(fd);
+		while (line)
+		{
+			printf("%s", line);
+			free(line);
+			line = get_next_line(fd);
+		}
+		close(fd);
+		return (0);
+	}
+<br><br>
+
+## Recursos y Uso de IA
+
+
+*   Distintas fuentes de internet, guia 42, paginas de google, videos de youtube.
+*   **Man pages:** `man 2 read`, `man 2 open`, `man 2 close`.
+*   **Tutoriales de 42:** Guías de la comunidad sobre el uso de variables estáticas y gestión de memoria en C.
+* Páginas de IA como Gémini para ayuda en construccion de reducción de funciones tras fallos y muchas dudas, y organizando los conceptos teóricos (fd, static, read) de forma pedagógica. Resolución de dudas conceptuales sobre la librería `<fcntl.h>` y el comportamiento de los flags de apertura de archivos.
